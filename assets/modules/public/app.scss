@@ -1,0 +1,32 @@
+@import '../core_styles/all';
+
+.row{
+  height:100%;
+  #company{
+    height:100%;
+    background-color:$gray-bg;
+  }
+  #ads{
+    height:100%;
+    background-color:$white;
+  }
+  #form{
+    height:100%;
+    background-color:$blue;
+  }
+}
+
+.login_page{
+  background-color:$white-bg;
+  background-image: url(/images/bg.png) !important;
+  .login_form{
+    margin-top: 50px;
+    padding: 3em 5em;
+    @include border-radius(3px);
+  }
+  @media only screen and (min-width: 90.063em){
+    .login_form{
+      margin-top: 100px;
+    }
+  }
+}

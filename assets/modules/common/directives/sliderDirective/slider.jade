@@ -1,0 +1,4 @@
+div
+  div(ng-init="hover = false", ng-mouseover="hover = true", ng-mouseleave="hover = false").message.left
+    h5 {{ active }}
+  div.left.slider(ng-transclude, ng-class="{'expand': hover === true}")

@@ -1,0 +1,35 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Applicants
+  .row#filter
+    .small-1.column
+      h2 {{(ads|filter:{status:0}:true).length}}
+    .small-2.column
+      h2 ACTIVE
+    .small-3.column
+      select(ng-init="filter = options[0].value", ng-model="filter", ng-options="o.value as o.name for o in options")
+    .small-6.column
+  .row#list
+    ul
+      li.list_item(ng-repeat="applicant in applicants | filter:search")
+        .small-1.column.text-center
+          .month {{applicant.createdAt | date:'MMM'}}
+          .day {{applicant.createdAt | date:'d'}}
+          .time {{applicant.createdAt | date:'h:mm a'}}
+        .small-10.column
+          | {{ applicant.applicant.firstName }} {{ applicant.applicant.lastName }} <{{ applicant.applicant.email }}>
+        .small-1.column(ng-click='remove($index)')
+          .icon-cancel-circle
+    #add_item(ng-click="toggleModal()") +
+    #search_item
+      .icon-search
+
+
+    //- a.title(ng-click="view('list')") BACK
+    //- ul#ads_list
+    //-   li
+    //-     .title {{active.ad.position.title}}
+    //-     .description {{active.ad.position.description}}
+    //-     ul
+    //-       li(ng-repeat="r in active.ad.position.responsibility") {{r.responsibility}}

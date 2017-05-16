@@ -1,0 +1,24 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    ".tmp/",
+    "views/*.jade",
+    "views/public.jade",
+    "views/admin.jade",
+    "node_modules/**/node_modules"
+  ],
+  "verbose": true,
+  "execMap": {
+    "js": "node --harmony"
+  },
+  "watch": [
+    "api/",
+    "assets/js",
+    "assets/modules"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js json coffee"
+}

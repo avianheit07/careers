@@ -1,0 +1,67 @@
+.row
+  .small-12.medium-4.large-3.column.text-center#company
+    figure
+      img(src="/images/meditab-logo.png", alt="meditab")
+
+    p.text-center#tagline
+      | We take innovation in health care seriously.
+
+
+
+
+  //- For Application Tracker
+  .small-12.medium-8.large-9.column#tracker
+    .row.back-btn
+      .small-3.column
+        a.title(href="/") BACK
+    .row
+      .small-12.medium-3.large-3.column
+        h4.title Applied To:
+      .small-12.column
+        h5.position {{ application.recruitmentAd.position.title }}
+        p {{ application.recruitmentAd.position.description }}
+    .row
+      .small-12.medium-3.large-3.column
+        h4.title Applied Last:
+      .small-12.medium-9.large-9.column
+        p {{ application.createdAt | date : 'medium' }}
+    .row
+      .small-12.medium-3.large-3.column
+        h4.title Applicant Email:
+      .small-12.medium-9.large-9.column
+        p {{ application.applicant.email }}
+    .row
+      .small-12.medium-3.large-3.column
+        h4.title Application Status:
+      .small-12.medium-9.large-9.column(ng-if="!application.processes.length")
+        p Your application is still pending.
+      .small-12.medium-9.large-9.column(ng-if="application.processes.length")
+        .row
+          .small-12.medium-12.large-12.column
+            progress(value="{{application.processes.length}}", max="{{application.recruitmentAd.process_filter.length}}")
+        .row
+          .small-12.medium-12.large-12.column(ng-if="application.processes[0].processData.name")
+            p
+              span Title:
+              | {{application.processes[0].processData.name}}
+        .row
+          .small-12.medium-12.large-12.column(ng-if="application.processes[0].processData.description")
+            p
+              span Description:
+              | {{application.processes[0].processData.description}}
+        .row
+          .small-12.medium-12.large-12.column(ng-if="application.processes[0].processData.assigned.email")
+            p
+              span Assigned:
+              | {{application.processes[0].processData.assigned.email}}
+        .row
+          .small-12.medium-12.large-12.column(ng-if="application.processes[0].processData.score")
+            p
+              span Passing Score:
+              | {{application.processes[0].processData.score}}
+        //- .row
+        //-   .small-12.medium-3.large-3.column.end.text-center
+        //-     .status(ng-class="{'pending': application.processes[0].status === 0, 'passed': application.processes[0].status === 1, 'failed': application.processes[0].status === 2 }")
+        //-       span(ng-if="application.processes[0].status === 0") Unprocessed
+        //-       span(ng-if="application.processes[0].status === 1") Passed
+        //-       span(ng-if="application.processes[0].status === 2") Failed

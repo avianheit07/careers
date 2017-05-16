@@ -1,0 +1,54 @@
+doctype html
+html(ng-app="CareersApp")
+    head
+        title Public
+        base(href="//#{base}/")
+        meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+
+        // STYLES
+        link(rel="stylesheet", href="/styles/dependencies/foundation/foundation.css")
+        link(rel="stylesheet", href="/styles/dependencies/foundation/normalize.css")
+        link(rel="stylesheet", href="/styles/common/directives/modalDirective/modal.css")
+        link(rel="stylesheet", href="/styles/common/directives/searchDirective/search.css")
+        link(rel="stylesheet", href="/styles/common/directives/sliderDirective/slider.css")
+        link(rel="stylesheet", href="/styles/common/directives/uploadDirective/upload.css")
+        link(rel="stylesheet", href="/styles/public/app.css")
+        link(rel="stylesheet", href="/styles/public/home/home.css")
+        link(rel="stylesheet", href="/styles/public/login/login.css")
+        link(rel="stylesheet", href="/styles/public/reprocess/reprocess.css")
+        link(rel="stylesheet", href="/styles/public/tracker/tracker.css")
+        // STYLES END
+    body
+        // TEMPLATES
+        script(type="text/javascript", src="/templates/jst_public.js")
+        // TEMPLATES END
+        toaster-container(toaster-options="{'position-class': 'toast-top-right', 'time-out': 6000}")
+        ng-view
+        // SCRIPTS
+        script(src="/js/dependencies/socket.io.js")
+        script(src="/js/dependencies/angular/angular.js")
+        script(src="/js/dependencies/angular/angular-animate.js")
+        script(src="/js/dependencies/angular/angular-cookies.js")
+        script(src="/js/dependencies/angular/angular-resource.js")
+        script(src="/js/dependencies/angular/angular-route.js")
+        script(src="/js/dependencies/angular/angular-ui-router.js")
+        script(src="/js/dependencies/angular/angular-ui.js")
+        script(src="/js/dependencies/lodash/lodash.js")
+        script(src="/js/dependencies/toaster/toaster.js")
+        script(src="/js/dependencies/sails.io.js")
+        script(src="/js/public/app.js")
+        script(src="/js/public/home/AdCtrl.js")
+        script(src="/js/public/home/HomeCtrl.js")
+        script(src="/js/public/login/LoginCtrl.js")
+        script(src="/js/public/reprocess/ReprocessCtrl.js")
+        script(src="/js/public/tracker/TrackerCtrl.js")
+        script(src="/js/common/NavigatorCtrl.js")
+        script(src="/js/common/directives/enterDirective/directive.js")
+        script(src="/js/common/directives/modalDirective/directive.js")
+        script(src="/js/common/directives/searchDirective/directive.js")
+        script(src="/js/common/directives/sliderDirective/directive.js")
+        script(src="/js/common/directives/uploadDirective/directive.js")
+        script(src="/js/common/settings/SettingsCtrl.js")
+        script(src="/js/common/shareService.js")
+        script(src="/js/common/userModel.js")
+        // SCRIPTS END

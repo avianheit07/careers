@@ -1,0 +1,148 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Positions
+  .row#list
+    ul
+      li.list_item(ng-repeat="p in positions")
+        .small-11.column(ng-click='select($index)')
+          | {{ p.title }}
+        .small-1.column(ng-click='remove($index)')
+          .icon-cancel-circle
+    #add_item(ng-click="toggleModal()") +
+    #search_item
+      .icon-search
+
+modal(show='modalShown', title='Position', class="fixed")
+  .row.position
+    .large-6.columns.left_column
+      input(type="text", placeholder="Title", value="{{position.data.title}}", ng-model="position.data.title")
+      input(type="text", placeholder="Description", value="{{position.data.description}}", ng-model="position.data.description")
+      label Responsibilities
+      ul.form_list
+        li.row
+          .small-12.column
+            input(type="text", placeholder="Press enter to add more...", ng-model="position.res", ng-enter="position.add('res',position.res)")
+        li.row(ng-repeat="r in position.data.responsibility")
+          .small-10.column
+            input(type="text", ng-model="r.responsibility")
+          .small-2.column
+            .icon-minus(ng-click="position.remove('res',$index)")
+      label Educational Requirements
+      ul.form_list
+        li.row
+          .small-12.column
+            input(type="text", placeholder="Press enter to add more...", ng-model="position.edu", ng-enter="position.add('edu',position.edu)")
+        li.row(ng-repeat="e in position.data.education")
+          .small-10.column
+            input(type="text", ng-model="e.education")
+          .small-2.column
+            .icon-minus(ng-click="position.remove('edu',$index)")
+      label Skill Requirements
+      ul.form_list
+        li.row
+          .small-12.column
+            input(type="text", placeholder="Press enter to add more...", ng-model="position.ski", ng-enter="position.add('ski',position.ski)")
+        li.row(ng-repeat="s in position.data.skill")
+          .small-10.column
+            input(type="text", ng-model="s.skill")
+          .small-2.column
+            .icon-minus(ng-click="position.remove('ski',$index)")
+      label Other Requirements
+      ul.form_list
+        li.row
+          .small-12.column
+            input(type="text", placeholder="Press enter to add more...", ng-model="position.oth", ng-enter="position.add('oth',position.oth)")
+        li.row(ng-repeat="o in position.data.other")
+          .small-10.column
+            input(type="text", ng-model="o.other")
+          .small-2.column
+            .icon-minus(ng-click="position.remove('oth',$index)")
+      input(type="text", placeholder="Note", value="{{position.data.note}}", ng-model="position.data.note")
+    .large-6.columns.right_column
+      .row
+        .small-4.column.manual
+          .icon-plus-squared(ng-click="position.add('man',position.man)")
+          label Manual Filter
+        .small-4.column.exam
+          .icon-plus-squared(ng-click="position.add('exa',position.exa)")
+          label Exam Filter
+        .small-4.column.interview
+          .icon-plus-squared(ng-click="position.add('int',position.int)")
+          label Interview Filter
+
+
+      ul
+        li(ng-repeat="f in position.data.process_filter")
+          .row.manual_group(ng-if="f.type === 0")
+            .small-12.column(ng-init="filterIndex = $index")
+              .icon-minus-squared(ng-click="position.remove('filter',$index)")
+                span Manual Filter
+              input(type="text", ng-model="f.name", placeholder="Name")
+              input(type="text", ng-model="f.description", placeholder="Description")
+              .row
+                .small-6.column
+                  input(type="text", placeholder="Search In-Charge", ng-model="user.search", ng-change="user.find()", ng-click="user.set($index)")
+                .small-5.column
+                  input(type="text", ng-model="f.assigned.email", disabled)
+                .small-1.column(ng-if="f.assigned")
+                  .icon-minus(ng-click="user.remove('man',$index)")
+              ul#search_results(ng-show="user.search", ng-if="f === user.activeFilter")
+                li.row(ng-repeat="u in users track by $index | filter:user.search")
+                  .small-12.column(ng-click="user.select('man',u,filterIndex)") {{u.email}}
+
+          .row.exam_group(ng-if="f.type === 1")
+            .small-12.column(ng-init="filterIndex = $index")
+              .icon-minus-squared(ng-click="position.remove('filter',$index)")
+                span Exam Filter
+              input(type="text", ng-model="f.name", placeholder="Name")
+              input(type="text", ng-model="f.description", placeholder="Description")
+              .row
+                .small-2.column
+                  label.inline(for="exam-score", style="margin-left:8px") Score
+                .small-3.column
+                  input(type="number", id="exam-score", ng-model="f.score", min="0")
+                .small-6.column
+              .row
+                .small-6.column
+                  input(type="text", placeholder="Search In-Charge", ng-model="user.search", ng-change="user.find()", ng-click="user.set($index)")
+                .small-5.column
+                  input(type="text", ng-model="f.assigned.email", disabled)
+                .small-1.column(ng-if="f.assigned")
+                  .icon-minus(ng-click="user.remove('exa',$index)")
+              ul#search_results(ng-show="user.search", ng-if="f === user.activeFilter")
+                li.row(ng-repeat="u in users track by $index | filter:user.search")
+                  .small-12.column(ng-click="user.select('exa',u,filterIndex)") {{u.email}}
+
+          .row.interview_group(ng-if="f.type === 2")
+            .small-12.column(ng-init="filterIndex = $index")
+              .icon-minus-squared(ng-click="position.remove('filter',$index)")
+                span Interview Filter
+              input(type="text", ng-model="f.name", placeholder="Name")
+              input(type="text", ng-model="f.description", placeholder="Description")
+              input(type="text", placeholder="Interview Questions (Press enter to add more)", ng-model="f.que", ng-enter="position.add('que',f.que,$index); f.que = ''")
+              ul(style="margin-left:10px")
+                li.row(ng-repeat="q in f.questions")
+                  .small-10.column
+                    input(type="text", ng-model="q.question")
+                  .small-2.column
+                    .icon-minus(ng-click="position.remove('que',$index,filterIndex)")
+              .row
+                .small-6.column
+                  input(type="text", placeholder="Search In-Charge", ng-model="user.search", ng-change="user.find()", ng-click="user.set($index)")
+                .small-5.column
+                  input(type="text", ng-model="f.assigned.email", disabled)
+                .small-1.column(ng-if="f.assigned")
+                  .icon-minus(ng-click="user.remove('int',$index)")
+              ul#search_results(ng-show="user.search", ng-if="f === user.activeFilter")
+                li.row(ng-repeat="u in users track by $index | filter:user.search")
+                  .small-12.column(ng-click="user.select('int',u,filterIndex)") {{u.email}}
+
+  .row
+    hr
+    .small-2.small-offset-6.text-center.columns
+      a(data-dismiss="modal", ng-click="toggleModal()", role="button", style="color:grey") Close
+    .small-2.columns.text-center
+      a(data-dismiss="modal", ng-click="remove(position.index)", role="button", style="color:red") Delete
+    .small-2.columns.text-center
+      a(data-dismiss="modal", role="button", data-ng-click="position.save(); toggleModal()", style="color:blue") Save

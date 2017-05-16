@@ -1,0 +1,64 @@
+{
+  "name": "ams",
+  "version": "0.0.0",
+  "authors": [
+    "neil paul molina <get.neilmolina@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "test",
+    "tests",
+    "js"
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-resource": "latest",
+    "angular-animate": "latest",
+    "angular-mocks": "latest",
+    "foundation": "latest",
+    "lodash": "latest",
+    "angular-ui": "~0.4.0",
+    "router": "~1.0.6",
+    "ng-breadcrumbs": "~0.4.1"
+  },
+  "install": {
+    "path": {
+      "css": "assets/styles/dependencies",
+      "js": "assets/js/dependencies"
+    },
+    "sources": {
+      "angular": [
+        "bower_components/angular/angular.js",
+        "bower_components/angular-animate/angular-animate.js",
+        "bower_components/angular-route/angular-route.js",
+        "bower_components/angular-resource/angular-resource.js"
+      ],
+      "lodash": [
+        "bower_components/lodash/dist/lodash.js"
+      ],
+      "foundation": [
+        "bower_components/foundation/css/foundation.css",
+        "bower_components/foundation/css/normalize.css"
+      ]
+    },
+    "ignore": [
+      "jquery",
+      "jquery.fs.selecter",
+      "jquery.fs.stepper",
+      "icheck",
+      "jquery-placeholder",
+      "angular-animate",
+      "angular-touch",
+      "angular-mocks",
+      "angular-route",
+      "angular-resource",
+      "jquery.cookie",
+      "fastclick",
+      "modernizr"
+    ]
+  }
+}

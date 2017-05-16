@@ -1,0 +1,177 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5
+        a(href="/ad") Recruitment Ads
+        | {{ }} > {{active.ad.position.title}} > Applicants
+
+
+  .row#process_filter
+    .small-12.column
+      ul.bold
+        li.new New
+        li(ng-repeat="p in active.ad.process_filter",ng-class="{'manual':p.type === 0, 'exam':p.type === 1, 'interview':p.type === 2}") {{p.name}}
+        li.trash.right Trash
+        li.new.right Done
+
+  //- INITIAL NEW FILTER
+  .row#filter.new(style="margin-top:35px")
+    .small-1.column.text-center
+      h2 {{newApplications.length}}
+    .small-5.column
+      h2 New
+    .small-5.column
+      slider.slider-container(status="filters.status", statusname="'verification'", ng-init="filters.status = 0")
+        ul
+          li(ng-repeat="v in options.verification")
+            h5(ng-class="{'selected':filters.status === v.value }", ng-click="filters.status = v.value", ng-hide="filters.status === v.value") {{v.name}}
+    .small-1.column
+      .indicator(ng-class="{'zero':filters.status === 0, 'one':filters.status === 1, 'two':filters.status === 2}")
+  .row#list
+    ul
+      li.list_item.slide-down(ng-repeat="a in newApplications = (active.ad.applicants | filter:filters.new)")
+        .small-1.column.text-center
+          .month {{a.createdAt | date:'MMM'}}
+          .day {{a.createdAt | date:'d'}}
+          .time {{a.createdAt | date:'h:mm a'}}
+        .small-1.column.text-center
+          .settings
+            a.icon-download(href="/file/download/{{a.resume}}", target="_blank")
+        .small-5.column
+          | {{a.applicant.firstName}} {{a.applicant.lastName}} ({{a.applicant.email}})
+        .small-5.column
+          //- Commented out for permission purposes
+          //- slider.slider-container.item(status="a.applicant.status", statusname="'verification'")
+          //-   ul
+          //-     li(ng-repeat="v in options.verification")
+          //-       h5(ng-class="{'selected':a.applicant.status === v.value }", ng-click="options.select('new',a.id,v)", ng-hide="a.applicant.status === v.value") {{v.name}}
+
+
+  //- ACTUAL PROCESS FILTERS
+  div(ng-repeat="p in active.ad.process_filter", ng-init="filterIndex = $index")
+    .row#filter(ng-class="{'manual':p.type === 0, 'exam':p.type === 1, 'interview':p.type === 2}")
+      .small-1.column.text-center
+        h2 {{filteredApplications.length}}
+      .small-5.column
+        h2 {{p.name}}
+      //- SLIDER FOR MANUAL FILTERS
+      .small-5.column(ng-if="p.type === 0", ng-init="filters.listFilter(p)")
+        slider.slider-container(status="filters.arr[filterIndex]", statusname="'recommendation'", ng-init="filters.arr[filterIndex] = 0")
+          ul
+            li(ng-repeat="r in options.recommendation")
+              h5(ng-class="{'selected':filters.arr[filterIndex] === r.value }", ng-click="filters.arr[filterIndex] = r.value", ng-hide="filters.arr[filterIndex] === r.value") {{r.name}}
+      //- SLIDER FOR EXAM FILTERS
+      .small-5.column(ng-if="p.type === 1", ng-init="filters.listFilter(p)")
+        slider.slider-container(status="filters.arr[filterIndex]", statusname="'examination'", ng-init="filters.arr[filterIndex] = 0")
+          ul
+            li(ng-repeat="e in options.examination")
+              h5(ng-class="{'selected':filters.arr[filterIndex] === e.value }", ng-click="filters.arr[filterIndex] = e.value", ng-hide="filters.arr[filterIndex] === e.value") {{e.name}}
+      //- SLIDER FOR INTERVIEW FILTERS
+      .small-5.column(ng-if="p.type === 2", ng-init="filters.listFilter(p)")
+        slider.slider-container(status="filters.arr[filterIndex]", statusname="'interview'", ng-init="filters.arr[filterIndex] = 0")
+          ul
+            li(ng-repeat="i in options.interview")
+              h5(ng-class="{'selected':filters.arr[filterIndex] === i.value }", ng-click="filters.arr[filterIndex] = i.value", ng-hide="filters.arr[filterIndex] === i.value") {{i.name}}
+      .small-1.column
+        .indicator(ng-class="{'zero':filters.arr[filterIndex] === 0, 'one':filters.arr[filterIndex] === 1, 'two':filters.arr[filterIndex] === 2}")
+    .row#list
+      ul
+        li.list_item.slide-down(ng-repeat="a in filteredApplications = (active.ad.applicants | filter:filters.processFilter(filterIndex))")
+          .small-1.column.text-center.bold
+            .month {{a.createdAt | date:'MMM'}}
+            .day {{a.createdAt | date:'d'}}
+            .time {{a.createdAt | date:'h:mm a'}}
+          .small-1.column.text-center
+            .settings
+              a.icon-download(href="/file/download/{{a.resume}}", target="_blank")
+          .small-5.column
+            | {{a.applicant.firstName}} {{a.applicant.lastName}} ({{a.applicant.email}})
+          //- CHECK IF PROCESS ASSIGNED IS EQUAL TO USER LOGGED IN
+          .small-5.column(ng-if="p.assigned.id === userId")
+            //- SLIDER FOR MANUAL FILTERS
+            div(ng-if="p.type === 0")
+              slider.slider-container.item(status="a.processes[filterIndex].status", statusname="'recommendation'")
+                ul
+                  li(ng-repeat="r in options.recommendation")
+                    h5(ng-class="{'selected':a.processes[filterIndex].status === r.value }", ng-click="options.select('manual',a.id,r)", ng-hide="a.processes[filterIndex].status === r.value") {{r.name}}
+            //- SLIDER FOR EXAM FILTERS
+            div(ng-if="p.type === 1")
+              button.button.tiny.info.radius(ng-show="a.processes[filterIndex].status === 1 || a.processes[filterIndex].status === 2", ng-click="options.select('exam',a.id,'recommend')") RECOMMEND
+              button.button.tiny.info.radius(ng-show="a.processes[filterIndex].status === 2", ng-click="options.select('exam',a.id,'unrecommend')") UNRECOMMEND
+              slider.slider-container.item.score(status="a.processes[filterIndex].status", statusname="'examination'")
+                input(type="number", ng-init="a.processes[filterIndex].processData.inputScore = 0", ng-model="a.processes[filterIndex].processData.inputScore", min="0", ng-enter="options.select('exam',a.id)")
+                | RECOMMEND
+                | NOT RECOMMEND
+            //- SLIDER FOR INTERVIEW FILTERS
+            div(ng-if="p.type === 2")
+              slider.slider-container.item(status="a.processes[filterIndex].status", statusname="'interview'")
+                ul
+                  li(ng-click="options.toggleModal(a.processes[filterIndex].processData.questions,a.id)")
+                    .icon-clipboard.left
+                    span NOTES
+          .small-5.column(ng-if="p.assigned.id !== userId")
+
+
+  //- DONE FILTER
+  .row#filter.new
+    .small-1.column.text-center
+      h2 {{doneApplications.length}}
+    .small-6.column
+      h2 Done
+    .small-5.column
+  .row#list
+    ul
+      li.list_item.slide-down(ng-repeat="a in doneApplications = (active.ad.applicants | filter:filters.done)")
+        .small-1.column.text-center
+          .month {{a.createdAt | date:'MMM'}}
+          .day {{a.createdAt | date:'d'}}
+          .time {{a.createdAt | date:'h:mm a'}}
+        .small-1.column.text-center
+          .settings
+            a.icon-download(href="/file/download/{{a.resume}}", target="_blank")
+        .small-5.column
+          | {{a.applicant.firstName}} {{a.applicant.lastName}} ({{a.applicant.email}})
+        .small-5.column
+
+
+  //- TRASH FILTER
+  .row#filter.trash
+    .small-1.column.text-center
+      h2 {{trashApplications.length}}
+    .small-6.column
+      h2 Trash
+    .small-5.column
+  .row#list
+    ul
+      li.list_item.slide-down(ng-repeat="a in trashApplications = (active.ad.applicants | filter:filters.trash)")
+        .small-1.column.text-center
+          .month {{a.createdAt | date:'MMM'}}
+          .day {{a.createdAt | date:'d'}}
+          .time {{a.createdAt | date:'h:mm a'}}
+        .small-1.column.text-center
+          .settings
+            a.icon-download(href="/file/download/{{a.resume}}", target="_blank")
+        .small-5.column
+          | {{a.applicant.firstName}} {{a.applicant.lastName}} ({{a.applicant.email}})
+        .small-5.column
+
+
+
+
+
+
+
+
+modal(show='interviewModalShown', title='Interview Notes', class="fixed")
+  .row.interview
+    .large-12.column
+      ul
+        li(ng-repeat="q in options.questions")
+          label.title {{q.question}}
+          textarea(rows="4", ng-model="q.answer")
+  .row
+    hr
+    ul
+      li(ng-repeat="i in options.interview", ng-hide="$first")
+        .small-3.column
+          a(data-dismiss="modal", role="button", data-ng-click="options.hideModal(); options.select('interview',options.activeId,i)") {{i.name}}

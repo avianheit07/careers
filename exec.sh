@@ -1,0 +1,1 @@
+docker exec -it career_app bash

@@ -1,0 +1,76 @@
+@mixin keyframe ($animation_name) {
+    @-webkit-keyframes $animation_name {
+        @content;
+    }
+
+    @-moz-keyframes $animation_name {
+        @content;
+    }
+
+    @-o-keyframes $animation_name {
+        @content;
+    }
+
+    @keyframes $animation_name {
+        @content;
+    }
+}
+
+@mixin animation ($delay, $duration, $animation) {
+    -webkit-animation-delay: $delay;
+    -webkit-animation-duration: $duration;
+    -webkit-animation-name: $animation;
+    -webkit-animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+
+    -moz-animation-delay: $delay;
+    -moz-animation-duration: $duration;
+    -moz-animation-name: $animation;
+    -moz-animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+
+    -o-animation-delay: $delay;
+    -o-animation-duration: $duration;
+    -o-animation-name: $animation;
+    -o-animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+
+    animation-delay: $delay;
+    animation-duration: $duration;
+    animation-name: $animation;
+    animation-fill-mode: forwards; /* this prevents the animation from restarting! */
+}
+
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+
+@mixin boxz{
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -o-box-sizing:border-box;
+}
+
+@mixin shadow($color,$h,$v,$blur,$inset:""){
+    box-shadow: $h $v $blur $color #{$inset};
+    -webkit-box-shadow: $h $v $blur $color #{$inset};
+    -moz-box-shadow: $h $v $blur $color #{$inset};
+    -o-box-shadow: $h $v $blur $color #{$inset};
+}
+
+@mixin textShadow($color,$h,$v,$blur){
+    text-shadow:$h $v $blur $color;
+    -webkit-text-shadow:$h $v $blur $color;
+    -moz-text-shadow:$h $v $blur $color;
+    -text-shadow:$h $v $blur $color;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}

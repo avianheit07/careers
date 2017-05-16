@@ -1,0 +1,73 @@
+doctype html
+html(ng-app="CareersApp")
+    head
+        title Human Resource
+        base(href="//#{base}/")
+        meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+
+        // STYLES
+        link(rel="stylesheet", href="/styles/dependencies/foundation/foundation.css")
+        link(rel="stylesheet", href="/styles/dependencies/foundation/normalize.css")
+        link(rel="stylesheet", href="/styles/common/directives/modalDirective/modal.css")
+        link(rel="stylesheet", href="/styles/common/directives/searchDirective/search.css")
+        link(rel="stylesheet", href="/styles/common/directives/sliderDirective/slider.css")
+        link(rel="stylesheet", href="/styles/common/directives/uploadDirective/upload.css")
+        link(rel="stylesheet", href="/styles/hr/app.css")
+        // STYLES END
+
+    body
+        // TEMPLATES
+        script(type="text/javascript", src="/templates/jst_hr.js")
+        // TEMPLATES END
+        .main_cover
+          nav(ng-controller='NavigatorCtrl')
+            .nav-btn(ng-class="{active:url('/ad')}")
+              a(href='/ad')
+                .icon-file-text
+            .nav-btn(ng-class="{active:url('/position')}")
+              a(href='/position')
+                .icon-suitcase
+            .nav-btn(ng-class="{active:url('/requester')}")
+              a(href='/requester')
+                .icon-user-add
+            .nav-btn(ng-class="{active:url('/applicant')}")
+              a(href='/applicant')
+                .icon-users
+            #settings(ng-class="{active:url('/settings')}")
+              a(href='/settings')
+                .icon-settings
+            #off.icon-power(ng-click='logout()')
+
+          section
+            toaster-container(toaster-options="{'position-class': 'toast-top-right', 'time-out': 6000}")
+            .toggle(ng-view='ng-view')
+        // SCRIPTS
+        script(src="/js/dependencies/socket.io.js")
+        script(src="/js/dependencies/angular/angular.js")
+        script(src="/js/dependencies/angular/angular-animate.js")
+        script(src="/js/dependencies/angular/angular-cookies.js")
+        script(src="/js/dependencies/angular/angular-resource.js")
+        script(src="/js/dependencies/angular/angular-route.js")
+        script(src="/js/dependencies/angular/angular-ui-router.js")
+        script(src="/js/dependencies/angular/angular-ui.js")
+        script(src="/js/dependencies/lodash/lodash.js")
+        script(src="/js/dependencies/toaster/toaster.js")
+        script(src="/js/dependencies/sails.io.js")
+        script(src="/js/dependencies/ng-breadcrumbs.js")
+        script(src="/js/hr/app.js")
+        script(src="/js/hr/ad/AdApplicantCtrl.js")
+        script(src="/js/hr/ad/AdCtrl.js")
+        script(src="/js/hr/applicant/ApplicantCtrl.js")
+        script(src="/js/hr/position/PositionCtrl.js")
+        script(src="/js/hr/requester/RequesterCtrl.js")
+        script(src="/js/common/NavigatorCtrl.js")
+        script(src="/js/common/directives/enterDirective/directive.js")
+        script(src="/js/common/directives/modalDirective/directive.js")
+        script(src="/js/common/directives/searchDirective/directive.js")
+        script(src="/js/common/directives/sliderDirective/directive.js")
+        script(src="/js/common/directives/uploadDirective/directive.js")
+        script(src="/js/common/settings/SettingsCtrl.js")
+        script(src="/js/common/shareService.js")
+        script(src="/js/common/userModel.js")
+        // SCRIPTS END
+

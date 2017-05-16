@@ -1,0 +1,75 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Accounts
+  .row#filter
+    .small-1.column
+      h2 {{ companies.length }}
+    .small-5.column
+      h2 Companies
+    .small-4.column
+
+    .small-1.column
+
+  .row#list
+    ul
+      li.list_item(ng-repeat="c in companies", ng-click='company.select($index)')
+        .small-11.column
+          | {{ c.name }}
+        .small-1.column
+    #add_item(ng-click="toggleModal()") +
+
+modal(show='modalShown', title='Company', class="fixed")
+  .row.company
+    .large-6.columns.left_column
+      form(name="companyForm", method="POST")
+        input#name(type="text", placeholder="Company Name", value="{{active.modal.name}}", ng-model="active.modal.name")
+        input#address(type="text", placeholder="Location", value="{{active.modal.address}}", ng-model="active.modal.address")
+        input#contactNumber(type="text", placeholder="Contact Number (Press enter to add)", value="{{company.phone}}", ng-model="company.phone", ng-enter="company.addPhone()")
+        ul
+          li.row(ng-repeat="p in active.modal.phone track by $index")
+            .small-10.column
+              | {{p}}
+            .small-2.column
+              .icon-minus(ng-click="company.splice('phone',$index)")
+        input#email(type="text", placeholder="Email Address (Press enter to add)", value="{{company.email}}", ng-model="company.email", ng-enter="company.addEmail()")
+        ul
+          li.row(ng-repeat="e in active.modal.email track by $index")
+            .small-10.column
+              | {{e}}
+            .small-2.column
+              .icon-minus(ng-click="company.splice('email',$index)")
+    .large-6.columns.right_column
+      //- search(role="role", company="active.modal.id")
+      #search_container
+        .row
+          .small-12.column
+            h5 Search Meditab User
+        .row
+          .small-12.column
+            input(type="text", ng-model="user.search", placeholder="Search Account", ng-change="user.find()")
+            ul(ng-show="user.search")
+              li.row(ng-repeat="u in users | filter:user.search | filter:user.searchFilter")
+                .small-11.column
+                  | {{u.email}}
+                .small-1.column
+                  .icon-plus(ng-click="user.add(u)")
+
+      #search_results
+        .row
+          .small-12.column
+            ul(ng-show="!user.search")
+              li(ng-repeat="s in user.hr | filter:{companyId:active.modal.id}:true | filter:user.resultFilter")
+                .small-11.column
+                  | {{s.email}}
+                .small-1.column
+                  .icon-minus(ng-click="user.remove(s)")
+
+  .row
+    hr
+    .small-2.small-offset-6.text-center.columns
+      a(data-dismiss="modal", ng-click="hideModal()", role="button", style="color:grey") Close
+    .small-2.columns.text-center
+      a(data-dismiss="modal", ng-click="company.remove(active.index)", role="button", style="color:red") Delete
+    .small-2.columns.text-center
+      a(data-dismiss="modal", role="button", data-ng-click="company.save(); hideModal()", style="color:blue") Save

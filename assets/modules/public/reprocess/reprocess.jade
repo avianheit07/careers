@@ -1,0 +1,32 @@
+.row
+  .small-12.medium-4.large-3.column.text-center#company
+    figure
+      img(src="/images/meditab-logo.png", alt="meditab")
+
+    p.text-center#tagline
+      | We take innovation in health care seriously.
+
+
+
+
+  //- For Application Tracker
+  .small-12.medium-8.large-9.column#tracker(ng-if="newApplication.status === 1")
+    .row.back-btn
+      .small-3.column
+        a.title(href="/") BACK
+    .row
+      .small-12.medium-12.large-12.column
+        h4.title Your application has been reprocessed
+    .row
+      .small-12.column.medium-12.large-12.column
+        h5.position {{ newApplication.recruitmentAd.position.title }}
+        p {{ newApplication.recruitmentAd.position.description }}
+
+
+  .small-12.medium-8.large-9.column#tracker(ng-if="newApplication.status === 0")
+    .row.back-btn
+      .small-3.column
+        a.title(href="/") BACK
+    .row
+      .small-12.medium-12.large-12.column
+        h4.title Your application was not reprocessed

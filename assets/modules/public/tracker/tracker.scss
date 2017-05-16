@@ -1,0 +1,76 @@
+@import '../../core_styles/all';
+
+.row{
+  height:100%;
+  #company{
+    padding:30px 15px;
+    height:100%;
+    border-right:2px solid $blue*.8;
+    background-color:$blue;
+    background-image:url(/images/blue-map.png) !important;
+    img{
+      height:80px;
+      margin-top:110px;
+    }
+    p#tagline{
+      color:$white;
+      font-weight:200;
+      font-size:1.2em;
+    }
+    @media only screen and (max-width: 40em) {
+      img{
+        margin-top:0;
+      }
+    }
+    @media only screen and (min-width: 90.063em) {
+      img{
+        height:110px;
+        margin-top:180px;
+      }
+      p#tagline{
+        font-size:1.6em;
+      }
+    }
+  }
+  @media only screen and (max-width: 40em) {
+    #company{
+      height:initial;
+    }
+  }
+  #tracker{
+    .back-btn{
+      margin-bottom:10px;
+      padding:10px 0 10px 0;
+      background-color:$gray-bg;
+    }
+    h4.title{
+      color:$black;
+    }
+    h5.position{
+      color:$gray-text;
+      margin-top:8px;
+      border-bottom:1px solid $gray-text;
+    }
+    p{
+      color:$gray-text;
+      span{
+        color:#666;
+        margin-right:10px;
+      }
+    }
+    .status{
+      color:$white;
+      font-weight:300;
+      padding:5px 10px;
+      &.pending{
+        background-color:$blue;
+      }
+      &.passed{
+        background-color:$green;
+      }
+      &.failed{
+        background-color:$red;
+      }
+    }
+  }
+}

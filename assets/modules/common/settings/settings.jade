@@ -1,0 +1,17 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Change Password
+  .row
+    .column.large-4.small-4
+      fieldset
+        legend Password
+        form(action='')
+          input(type='password', placeholder='Current password', ng-model='pass.data.password')
+          input(type='password', placeholder='New password', ng-model='pass.data.newPassword')
+          input(type='password', placeholder='Re-type new password', ng-model='pass.data.newPasswordCopy')
+        button.button.expand(ng-click='pass.submit()') Change Password
+        .panel.callout.alert.text-center(ng-show='pass.data.newPasswordCopy && pass.data.newPassword != pass.data.newPasswordCopy')
+          | new password does not match
+        .panel.callout.text-center(ng-show='pass.message')
+          | {{pass.message}}

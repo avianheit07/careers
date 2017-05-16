@@ -1,0 +1,19 @@
+.row.login_page
+  .column.medium-5.small-centered
+    .row
+      .column.small-12.small-centered
+        form.login_form(action="/login", method="POST")
+          figure.text-center
+            img(src='images/logo.png')
+          label(for="email") Email
+          input#email.radius(type="email",name="email",placeholder="email@domain.com")
+          label(for="password") Password
+          input#password.radius(type="password",name="password",placeholder="password")
+          .row
+            .large-4.column
+              button.button.expand.success.round(type="submit",style="color:white") Login
+            .large-8.column
+              a.button.expand.round(href='/auth/google', target='_self' style="color:white") Login with corporate Email
+          .row
+            .large-12.column
+              a.button.expand.round.tiny.secondary(href="/") Return to Home Page

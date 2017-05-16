@@ -1,0 +1,65 @@
+.row
+  .small-12.column.text-center#home(ng-show="!ads")
+    figure
+      a(ng-href="http://www.meditab.com")
+        img(src="/images/meditab-logo.png", alt="meditab")
+    h1#tagline_1 Taking health-care innovation to
+      b#seriously greater heights.
+    h5#tagline_2 Learn how we do it, meet our awesome team, and be part of a growing family!
+    #vacancies.row
+      .small-12.column
+        b#number {{vacancies}}
+        span vacancies are now available!
+    #options.row
+      .small-12.medium-6.medium-offset-3.large-4.large-offset-4.column
+        #select(ng-mouseover="showCompanies = true", ng-mouseleave="showCompanies = false") {{active.company.name}}
+          .icon-down-open-big.right
+          ul(ng-show="showCompanies")
+            li.slide-down(ng-repeat="c in companies", ng-show="showCompanies", ng-click="company.assign(c)")
+              .icon-angle-right {{c.name}}
+
+
+  //-  For Wildcard Application
+  .small-12.medium-8.large-8.column#ads(ng-show="ads")
+    .header.row
+      .small-5.medium-4.large-4.column
+        figure
+          a(ng-href="http://www.meditab.com")
+            img(src="/images/meditab.png", alt="meditab")
+      .small-7.medium-8.large-8.column.text-right
+        //- h6 {{active.company.name}} - {{active.company.address}}
+        #options.row
+          .small-12.column
+            #select.right(ng-mouseover="showCompanies = true", ng-mouseleave="showCompanies = false") {{active.company.name}} - {{active.company.address}}
+              .icon-down-open-big.right
+              ul
+                li.slide-down(ng-repeat="c in companies", ng-show="showCompanies", ng-click="company.assign(c)")
+                  | {{c.name}}
+    .latest.row
+      .small-12.column
+        | Latest Job Openings
+    ul#ads_list
+      li.row(ng-repeat="a in ads | orderBy:['-weight','-createdAt']", ng-click="test(a.id)")
+        .title.small-12.column
+          a(ng-href="/ad/{{a.id}}") {{a.position.title}}
+          a.learn_more(ng-href="/ad/{{a.id}}") Learn More
+        .description.small-12.column {{a.position.description}}
+
+
+
+  .small-12.medium-4.large-4.column#form(ng-if="ads")
+    h5.bold Let's match your potential with our needs
+    p
+      | Provide the necessary information and upload your updated résumé.
+    input(type="text", ng-model="applicant.data.firstName", placeholder="First Name")
+    input(type="text", ng-model="applicant.data.lastName", placeholder="Last Name")
+    input(type="email", ng-model="applicant.data.email", placeholder="E-mail Address")
+    input(type="text", ng-model="applicant.data.mobileNumber", placeholder="Contact Number")
+
+    fileuploader(url="/file/upload", files="applicant.data.resume", after-upload="applicant.data.resume")
+
+    input(type="text", ng-model="applicant.data.expectedStart", placeholder="How soon can you start?")
+    button.button.round.expand.submit(ng-click="applicant.save()") Submit
+
+    p.text-center
+      | By clicking Submit, you are agreeing to the terms and conditions set by Meditab, Inc.

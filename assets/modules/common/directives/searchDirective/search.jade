@@ -1,0 +1,26 @@
+div
+  #search_container
+    .row
+      .small-12.column
+        h5 Search Meditab User
+    .row
+      .small-12.column
+        input(type="text", ng-model="search", placeholder="Search Account", ng-change="find()")
+        ul(ng-show="search")
+          li.row(ng-repeat="u in users track by $index | filter:search", ng-class="{'selected': evaluate(u)}")
+            .small-11.column
+              | {{u.email}}
+            .small-1.column
+              .icon-plus(ng-click="add(u)")
+
+  //- #search_results
+  //-   .row
+  //-     .small-12.column
+  //-       ul(ng-show="!search")
+  //-         li(ng-repeat="s in selected track by $index")
+  //-           .small-11.column
+  //-             | {{s.email}}
+  //-           .small-1.column
+  //-             .icon-minus(ng-click="remove(s)")
+
+

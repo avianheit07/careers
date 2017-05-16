@@ -1,0 +1,8 @@
+.ng-modal.fade(ng-show='show', role="dialog", tabindex="-1", aria-hidden="true")
+  .reveal-modal(ng-show='show')
+    .row
+      h4.title {{ title }}
+      a.close-reveal-modal(ng-click='hideModal()') ×
+      hr
+    .row(ng-transclude='')
+  .reveal-modal-bg(ng-click='hideModal()')

@@ -1,0 +1,65 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Applicants
+  .row#filter
+    .small-1.column
+      //- h2 {{(ads|filter:{status:0}:true).length}}
+      h2 {{filteredApplicants.length}}
+    .small-2.column
+      h2 ACTIVE
+    .small-3.column
+      select(ng-init="filter = options[0].value", ng-model="filter", ng-options="o.value as o.name for o in options")
+    .small-6.column
+  .row#list
+    ul
+      li.list_item(ng-repeat="a in filteredApplicants = (applicants | filter:search)")
+        .small-1.column.text-center
+          .month {{a.createdAt | date:'MMM'}}
+          .day {{a.createdAt | date:'d'}}
+          .time {{a.createdAt | date:'h:mm a'}}
+        .small-9.column
+          | {{a.applicant.firstName}} {{a.applicant.lastName}} ({{a.applicant.email}})
+          .recruitmentAd
+            .icon-file-text(ng-if="!a.recruitmentAd", ng-click="applicant.toggleModal(a)")
+        .small-1.column.text-center
+          a.icon-download(href="/file/download/{{a.resume}}", target="_blank")
+        .small-1.column.text-center(ng-click='remove($index)')
+          .icon-cancel-circle
+
+
+    //- a.title(ng-click="view('list')") BACK
+    //- ul#ads_list
+    //-   li
+    //-     .title {{active.ad.position.title}}
+    //-     .description {{active.ad.position.description}}
+    //-     ul
+    //-       li(ng-repeat="r in active.ad.position.responsibility") {{r.responsibility}}
+
+
+modal(show='recruitmentAdModal', title='Recruitment Ads', class="fixed")
+  .row.recruitmentAd
+    .large-6.column.left_column
+      ul
+        li.row(ng-repeat="a in ads", ng-click="applicant.select(a)", ng-class="{'active': a.id === active.ad.id}")
+          .small-12.column.bold {{a.position.title}}
+    .large-6.column.right_column.slide-right(ng-if="active.ad")
+      p.description
+        | {{active.ad.position.description}}
+      h6.bold(ng-show="active.ad.position.responsibility.length") Responsibility:
+      ul
+        li(ng-repeat="r in active.ad.position.responsibility") {{r.responsibility}}
+      h6.bold(ng-show="active.ad.position.education.length") Educational Requirements:
+      ul
+        li(ng-repeat="e in active.ad.position.education") {{e.education}}
+      h6.bold(ng-show="active.ad.position.skill.length") Skill Requirements:
+      ul
+        li(ng-repeat="s in active.ad.position.skill") {{s.skill}}
+      h6.bold(ng-show="active.ad.position.other.length") Other Requirements:
+      ul
+        li(ng-repeat="o in active.ad.position.other") {{o.other}}
+      h6.bold(ng-show="active.ad.position.note") Note:
+      p.description
+        | {{active.ad.position.note}}
+      button.button.tiny.expand.success(ng-click="applicant.assign()") Assign
+

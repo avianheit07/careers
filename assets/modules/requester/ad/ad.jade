@@ -1,0 +1,141 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Recruitment Ads
+
+  #add_item(ng-click="toggleModal()") +
+
+  .row#filter
+    .small-1.column.text-center
+      h2 {{activeAds.length}}
+    .small-5.column
+      h2 Active
+    .small-4.column
+
+    .small-1.column
+  .row#list
+    ul
+      li.list_item.slide_down(ng-repeat="a in activeAds = (ads | filter:{status:0}:true | orderBy:['-weight','-createdAt'])", style="cursor:default")
+        .small-10.column(ng-mouseover="showEdit = true", ng-mouseleave="showEdit = false")
+          .row
+            .small-2.column.text-center.quota
+              | {{getHired(a)}} / {{a.quota}}
+            .small-10.column
+              span.position_title(ng-click='select(a)') {{ a.position.title }}
+              span(ng-click='select(a)', ng-show="showEdit").icon-edit
+        .small-1.column.text-center(ng-show=" active.adApplicants[a.id].newApplicants.length ")
+          a.score_box.green.bold(href="/ad/{{a.id}}", ng-click="showApplicants(a)")
+            | {{active.adApplicants[a.id].newApplicants.length}}
+        .small-1.column.text-center(ng-show=" active.adApplicants[a.id].processing.length ")
+          a.score_box.blue.bold(href="/ad/{{a.id}}")
+            | {{active.adApplicants[a.id].processing.length}}
+  .row#filter.gray
+    .small-1.column.text-center
+      h2 {{closedAds.length}}
+    .small-5.column
+      h2 Closed
+    .small-4.column
+
+    .small-1.column
+  .row#list
+    ul
+      li.list_item(ng-repeat="a in closedAds = (ads | filter:{status:1}:true)", ng-click='select($index)', ng-mouseover="showEdit = true", ng-mouseleave="showEdit = false", style="cursor:default")
+        .small-2.column.text-center.quota
+          | {{a.hired || 0}} / {{a.quota}}
+        .small-9.column
+          span.position_title(ng-click='select(a)') {{ a.position.title }}
+          span(ng-click='select(a)', ng-show="showEdit").icon-edit
+        .small-1.column.text-center(ng-show=" active.adApplicants[a.id].length ")
+          a.score_box.green.bold(href="/ad/{{a.id}}")
+            | {{active.adApplicants[a.id].length}}
+
+
+
+
+
+
+modal(show='modalShown', title='Request Editor', class="fixed")
+  .row.request
+    //- Request Editor
+    .large-6.columns.left_column(ng-if="active.modal === 'request'")
+      label Requester
+       input(type="text", ng-model="active.user.email", disabled, style="text-align:center")
+      label Quota
+      .row
+        .small-6.column.small-offset-3.number
+          input.left(type="text", disabled, ng-model="request.data.quota")
+          .icon-subtract.left(ng-click="counter.subtract()")
+          .icon-add(ng-click="counter.add()")
+      label Position
+      select(ng-model="request.data.position.id", ng-options="p.id as p.title for p in positions")
+        option(value="" selected) Select a position
+      label Question
+      p
+        | The applicant's answer will be limited to 140 characters
+        br
+        | {{140 - request.data.question.length}} characters left
+      textarea(rows="4", ng-model="request.data.question", maxlength="140", ng-trim="false")
+    .large-6.columns.right_column(ng-if="active.modal === 'request'")
+      a#request_option.icon-user-add(ng-if="active.modal === 'request'", ng-click="active.toggleModal('applicant')")
+      a#request_option.icon-file-text(ng-if="active.modal === 'applicant'", ng-click="active.toggleModal('request')")
+      label Process
+      ul
+        li(ng-repeat="p in positions | filter:{id:request.data.position.id}:true | filter:request.positionFilter")
+          div(ng-init="request.data.process_filter = p.process_filter")
+            .row(ng-repeat="f in request.data.process_filter")
+              .small-12.column(ng-init="index = $index")
+                .manual_group(ng-show="f.type === 0")
+                  h5.title {{f.name}}
+                  label In-Charge
+                  .row
+                    .small-6.column
+                      input(type="text", ng-model="f.assigned.email", disabled)
+                    .small-6.column
+                      input(type="text", placeholder="Search In-Charge", ng-model="user.search_man", ng-change="user.find('man')")
+                  ul#search_results(ng-show="user.search_man")
+                    li.row(ng-repeat="u in users_man track by $index | filter:user.search_man")
+                      .small-12.column(ng-click="user.select('man',u,index,f)") {{u.email}}
+                .exam_group(ng-show="f.type === 1")
+                  h5.title {{f.name}}
+                  label Proctor
+                  .row
+                    .small-6.column
+                      input(type="text", ng-model="f.assigned.email", disabled)
+                    .small-6.column
+                      input(type="text", placeholder="Search Proctor", ng-model="user.search_exa", ng-change="user.find('exa')")
+                  ul#search_results(ng-show="user.search_exa")
+                    li.row(ng-repeat="u in users_exa track by $index | filter:user.search_exa")
+                      .small-12.column(ng-click="user.select('exa',u,index,f)") {{u.email}}
+                .interview_group(ng-show="f.type === 2")
+                  h5.title {{f.name}}
+                  label Interviewer
+                  .row
+                    .small-6.column
+                      input(type="text", ng-model="f.assigned.email", disabled)
+                    .small-6.column
+                      input(type="text", placeholder="Search Interviewer", ng-model="user.search_int", ng-change="user.find('int')")
+                  ul#search_results(ng-show="user.search_int")
+                    li.row(ng-repeat="u in users_int track by $index | filter:user.search_int")
+                      .small-12.column(ng-click="user.select('int',u,index,f)") {{u.email}}
+
+    //- Applicant editor
+    .large-6.column.left_column(ng-if="active.modal === 'applicant'")
+      input(type="text", ng-model="applicant.data.firstName", placeholder="First Name")
+      input(type="text", ng-model="applicant.data.lastName", placeholder="Last Name")
+      input(type="text", ng-model="applicant.data.email", placeholder="Email Address")
+      input(type="text", ng-model="applicant.data.mobileNumber", placeholder="Contact Number")
+    .large-6.column.right_column(ng-if="active.modal === 'applicant'")
+      a#request_option.icon-user-add(ng-if="active.modal === 'request'", ng-click="active.toggleModal('applicant')")
+      a#request_option.icon-file-text(ng-if="active.modal === 'applicant'", ng-click="active.toggleModal('request')")
+      hr(style="margin-top:35px")
+      fileuploader(url="/file/upload", files="applicant.data.resume", after-upload="applicant.data.resume")
+      textarea(rows="4", ng-model="applicant.data.question.answer", maxlength="140", ng-trim="false", placeholder="Answer here...")
+      h6.title.right {{applicant.data.question.answer.length || 0}} / 140
+      input#expectedStart(type="text", ng-model="applicant.data.expectedStart", placeholder="When can we expect you to start?")
+  .row
+    hr
+    .small-2.small-offset-8.text-center.columns
+      a(data-dismiss="modal", ng-click="hideModal()", role="button", style="color:grey") CANCEL
+    .small-2.columns.text-center
+      a(data-dismiss="modal", role="button", data-ng-click="request.save(); hideModal()", ng-if="active.modal === 'request'") SAVE
+      a(data-dismiss="modal", role="button", data-ng-click="applicant.save(); hideModal()", ng-if="active.modal === 'applicant'") ADD APPLICANT

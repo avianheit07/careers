@@ -1,0 +1,17 @@
+.cover.view
+  .row#breadcrumbs
+    .small-12.column
+      h5 Requesters
+  .row#list
+    ul
+      li.list_item(ng-repeat="r in requesters", ng-click='select($index)')
+        .small-11.column
+          | {{ r.email }}
+        .small-1.column
+          .icon-cancel-circle(ng-click="remove(r)")
+    #add_item(ng-click="toggleSearch()", ng-class="{'active':searchShown}")
+      span(ng-if="!searchShown") +
+      span(ng-if="searchShown") -
+
+.user_search(ng-show="searchShown")
+  search(role="role", company="companyId")
